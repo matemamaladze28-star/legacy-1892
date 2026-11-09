@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#120d0a">
+<title>LEGACY 1892 — Minecraft Server</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&family=Manrope:wght@400;500;600;700;800&display=swap');
+:root{--bg:#100c0a;--panel:#1b1410;--gold:#d9a441;--gold2:#ffdc87;--red:#7d201d;--muted:#b9a995;--line:#594027}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 50% -10%,#52301b 0,#160f0b 42%,#0d0908 100%);color:#f7ead5;font-family:Manrope,Arial,sans-serif}
+a{color:inherit;text-decoration:none}.wrap{width:min(1180px,92%);margin:auto}
+header{position:sticky;top:0;z-index:10;background:#100c0aeF;border-bottom:1px solid #6b4a25;backdrop-filter:blur(12px)}
+.nav{height:76px;display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{font:900 24px Cinzel,serif;color:var(--gold2);letter-spacing:2px}.brand small{display:block;font:700 9px Manrope;letter-spacing:5px;text-align:center;color:#b88a45}
+nav{display:flex;gap:24px;color:#e6d3b6;font-size:13px;font-weight:800;text-transform:uppercase}nav a:hover,nav a.active{color:var(--gold2)}
+.btn{border:1px solid var(--gold);background:linear-gradient(135deg,#9b6421,#e0ad4f);color:#1a1008;padding:12px 18px;border-radius:5px;font-weight:900;cursor:pointer;box-shadow:0 5px 22px #0007;display:inline-block}.btn:hover{filter:brightness(1.12);transform:translateY(-1px)}
+.hero{min-height:610px;display:grid;place-items:center;text-align:center;position:relative;overflow:hidden;border-bottom:1px solid #6b4a25;background:linear-gradient(90deg,#0b0807d9,#0b08074d,#0b0807d9),url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=2000&q=85') center/cover}
+.hero:after{content:"";position:absolute;inset:auto 0 0;height:180px;background:linear-gradient(transparent,var(--bg))}
+.hero-content{position:relative;z-index:1;padding:70px 15px}.eyebrow{color:var(--gold2);letter-spacing:5px;font-size:12px;font-weight:900}.hero h1{font:900 clamp(48px,9vw,105px)/.95 Cinzel,serif;margin:18px 0 4px;color:#f3c66d;text-shadow:0 5px 0 #5a2e0d,0 12px 35px #000;letter-spacing:3px}.hero h2{font:800 clamp(35px,6vw,65px) Cinzel;margin:0;color:#ffe2a0;text-shadow:0 5px 20px #000}.hero p{color:#f2dfc3;max-width:620px;margin:22px auto 28px;line-height:1.8}
+.ipbox{display:inline-flex;align-items:center;gap:14px;border:1px solid #b78337;background:#160f0bdc;padding:10px 12px 10px 20px;border-radius:6px}.ipbox strong{font:700 15px Manrope;letter-spacing:1px}
+.discord-link{display:inline-flex;flex-direction:column;align-items:center;gap:8px;margin-top:26px;padding:16px 28px;border:1px solid #5865F2;background:#5865F222;border-radius:12px;color:#fff;font-weight:800;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;transition:.2s;box-shadow:0 8px 25px #0008}.discord-link:hover{background:#5865F244;transform:translateY(-3px);box-shadow:0 12px 30px #5865f244}.discord-link svg{width:64px;height:64px;fill:#5865F2;filter:drop-shadow(0 4px 12px #000a)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:-35px;position:relative;z-index:2}.stat,.panel{background:linear-gradient(145deg,#241910,#140f0c);border:1px solid #684923;border-radius:8px}.stat{text-align:center;padding:20px}.stat b{display:block;color:var(--gold2);font:800 25px Cinzel}.stat span{font-size:11px;color:var(--muted);letter-spacing:2px}
+section{padding:78px 0}.section-head{text-align:center;margin-bottom:34px}.section-head .eyebrow{letter-spacing:4px}.section-head h2{font:800 clamp(28px,4vw,42px) Cinzel;color:var(--gold2);margin:10px 0}.section-head p{color:var(--muted);margin:0}
+.panel{padding:24px}
+.online-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:40px}
+.list-head{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #594027;padding-bottom:12px;margin-bottom:16px}
+.list-head h3{margin:0;font:700 20px Cinzel;color:var(--gold2)}
+.badge{font-size:11px;font-weight:800;padding:4px 10px;border-radius:20px;background:#2e2014;border:1px solid #684923;color:var(--gold2)}
+.player-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;max-height:280px;overflow-y:auto}
+.player-item{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:#100c0a;border:1px solid #422e1b;border-radius:6px;font-size:14px;font-weight:600}
+.player-info{display:flex;align-items:center;gap:10px}
+.dot{width:9px;height:9px;border-radius:50%;background:#38d968;box-shadow:0 0 8px #38d968}
+.dot.offline{background:#7a6a58;box-shadow:none}
+.admin-role{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1px;padding:3px 8px;border-radius:4px;background:#7d201d55;border:1px solid #b83b36;color:#ff9e9b}
+.admin-role.owner{background:#d9a44133;border-color:#d9a441;color:#ffdc87}
+footer{border-top:1px solid #684923;padding:30px 0;color:var(--muted);font-size:12px;text-align:center}
+.modal{display:none;position:fixed;inset:0;background:#000b;z-index:30;place-items:center;padding:20px}.modal.open{display:grid}.modalbox{width:min(440px,100%);background:#1b1410;border:1px solid var(--gold);border-radius:9px;padding:25px}.modalbox input{width:100%;padding:13px;margin:8px 0;background:#0d0908;border:1px solid #674a2c;color:white;border-radius:5px}.close{float:right;background:none;border:0;color:#fff;font-size:24px;cursor:pointer}.tag{font-size:10px;color:#f1c875;letter-spacing:2px;text-transform:uppercase}
+@media(max-width:760px){.nav{height:auto;min-height:70px;flex-wrap:wrap;padding:12px 0}nav{order:3;width:100%;justify-content:center;gap:14px;flex-wrap:wrap;font-size:11px}.nav>.btn{padding:9px 12px}.hero{min-height:560px}.stats,.online-grid{grid-template-columns:1fr}.stats{margin-top:15px}.stat{padding:14px}section{padding:55px 0}}
+</style>
+</head>
+<body>
+<header><div class="wrap nav">
+<a class="brand" href="index.html">LEGACY <small>1892</small></a>
+<nav><a href="index.html" class="active">მთავარი</a><a href="shop.html">მაღაზია</a><a href="forum.html">ფორუმი</a><a href="#rules">წესები</a></nav>
+<button class="btn" onclick="openModal()">შესვლა</button>
+</div></header>
+<main>
+<section class="hero" id="home"><div class="hero-content wrap">
+<div class="eyebrow">THE KINGDOM AWAITS</div><h1>LEGACY</h1><h2>1892</h2>
+<p>შექმენი შენი ისტორია. იბრძოლე სამეფოსთვის, ააშენე შენი იმპერია და გახდი LEGACY-ის ლეგენდა.</p>
+<div class="ipbox"><strong id="serverIp">5.83.153.60:5076</strong><button class="btn" onclick="copyIp()">IP კოპირება</button></div>
+<div style="margin-top:22px"><a class="btn" href="shop.html">მაღაზია</a> <a class="btn" href="forum.html" style="background:#241810;color:#f4d18a">ფორუმი</a></div>
+<div>
+<a class="discord-link" href="https://discord.gg/YGFzrmqDN" target="_blank" rel="noopener noreferrer" aria-label="Discord სერვერზე გადასვლა">
+<svg viewBox="0 0 127.14 96.36" xmlns="http://www.w3.org/2000/svg"><path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"/></svg>
+<span>შემოგვიერთდი Discord-ზე</span>
+</a>
+</div>
+</div></section>
+
+<div class="wrap stats">
+<div class="stat"><b>JAVA</b><span>EDITION</span></div><div class="stat"><b id="online">—</b><span>მოთამაშე ონლაინ</span></div><div class="stat"><b>1.20+</b><span>სერვერის ვერსია</span></div>
+</div>
+
+<div class="wrap online-grid">
+  <div class="panel">
+    <div class="list-head">
+      <h3>ონლაინ მოთამაშეები</h3>
+      <span class="badge" id="playerCountBadge">0 / 0</span>
+    </div>
+    <ul class="player-list" id="playersList">
+      <li class="player-item" style="color:var(--muted)">იტვირთება...</li>
+    </ul>
+  </div>
+
+  <div class="panel">
+    <div class="list-head">
+      <h3>ონლაინ ადმინისტრატორები</h3>
+      <span class="badge" id="adminCountBadge">0 ონლაინ</span>
+    </div>
+    <ul class="player-list" id="adminsList">
+      <li class="player-item" style="color:var(--muted)">იტვირთება...</li>
+    </ul>
+  </div>
+</div>
+
+<section id="rules"><div class="wrap"><div class="section-head"><div class="eyebrow">HONOR • RESPECT • LEGACY</div><h2>სამეფოს წესები</h2><p>პატივი ეცი მოთამაშეებს, დაიცავი წესები და ითამაშე სამართლიანად.</p></div><div class="panel"><p style="color:var(--muted);line-height:2;text-align:center">1. პატივი ეცი ყველა მოთამაშეს.<br>2. აკრძალულია ჩეთებისა და ბოროტად გამოყენებადი შეცდომების გამოყენება.<br>3. არ შეუშალო ხელი სხვებს თამაშში.<br>4. დაიცავი ადმინისტრაციის მითითებები.<br>5. ითამაშე სამართლიანად და ისიამოვნე!</p></div></div></section>
+</main>
+<footer><div class="wrap">© 2026 LEGACY 1892 • Minecraft Server. Not affiliated with Mojang or Microsoft.</div></footer>
+
+<div class="modal" id="loginModal" <div class="modal" id="loginModal" onclick="if(event.target===this)closeModal()">
+  <div class="modalbox">
+    <button class="close" onclick="closeModal()">×</button>
+    <div class="tag">PLAYER ACCOUNT</div>
+    <h2 id="modalTitle" style="font:700 25px Cinzel;color:var(--gold2)">შესვლა</h2>
+
+    <input id="authUser" placeholder="მომხმარებლის სახელი" autocomplete="username">
+    <input id="authEmail" placeholder="ელფოსტა" type="email" autocomplete="email" style="display:none">
+    <input id="authPass" placeholder="პაროლი" type="password" autocomplete="current-password">
+
+    <button class="btn" style="width:100%;margin-top:8px" onclick="submitAuth()" id="authBtn">შესვლა</button>
+    <p id="authMsg" style="font-size:12px;color:#ffdc87;margin:10px 0 0;text-align:center"></p>
+    <p style="font-size:12px;color:var(--muted);text-align:center;margin-top:12px">
+      <a href="#" onclick="toggleAuthMode(event)" id="toggleLink" style="color:var(--gold2);text-decoration:underline">არ გაქვს ანგარიში? დარეგისტრირდი</a>
+    </p>
+  </div>
+</div>
+
+<script>
+const serverAdmins = [
+  { name: "Natlia_Legacy", role: "Owner" },
+  { name: "amirani", role: "Owner" },
+  { name: "Mate_Admin", role: "Admin" },
+  { name: "Luka_Mod", role: "Moderator" }
+];
+
+let isRegister = false;
+
+function copyIp(){const ip=document.getElementById('serverIp').textContent;navigator.clipboard?.writeText(ip).then(()=>alert('Server IP დაკოპირდა: '+ip)).catch(()=>alert('Server IP: '+ip))}
+function openModal(){document.getElementById('loginModal').classList.add('open');document.getElementById('authMsg').textContent='';}
+function closeModal(){document.getElementById('loginModal').classList.remove('open')}
+
+function toggleAuthMode(e){
+  e.preventDefault();
+  isRegister = !isRegister;
+  document.getElementById('modalTitle').textContent = isRegister ? 'რეგისტრაცია' : 'შესვლა';
+  document.getElementById('authEmail').style.display = isRegister ? 'block' : 'none';
+  document.getElementById('authBtn').textContent = isRegister ? 'ანგარიშის შექმნა' : 'შესვლა';
+  document.getElementById('toggleLink').textContent = isRegister ? 'უკვე გაქვს ანგარიში? შესვლა' : 'არ გაქვს ანგარიში? დარეგისტრირდი';
+  document.getElementById('authMsg').textContent = '';
+}
+
+async function submitAuth(){
+  const username = document.getElementById('authUser').value.trim();
+  const email = document.getElementById('authEmail').value.trim();
+  const password = document.getElementById('authPass').value;
+  const msgEl = document.getElementById('authMsg');
+
+  const url = isRegister ? '/api/register' : '/api/login';
+  const body = isRegister ? { username, email, password } : { username, password };
+
+  try {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    const data = await res.json();
+    msgEl.textContent = data.message;
+
+    if (data.success) {
+      if (!isRegister) {
+        localStorage.setItem('legacy_user', data.username);
+        updateHeaderUser();
+        setTimeout(closeModal, 800);
+      } else {
+        setTimeout(() => toggleAuthMode({ preventDefault: () => {} }), 1000);
+      }
+    }
+  } catch (err) {
+    msgEl.textContent = 'სერვერთან კავშირი ვერ მოხერხდა (ჩართულია node server.js?)';
+  }
+}
+
+function updateHeaderUser(){
+  const user = localStorage.getItem('legacy_user');
+  const headerBtn = document.querySelector('header .btn');
+  if (user && headerBtn) {
+    headerBtn.textContent = user + ' (გასვლა)';
+    headerBtn.onclick = () => {
+      localStorage.removeItem('legacy_user');
+      location.reload();
+    };
+  }
+}
+updateHeaderUser();
+
+async function loadServerStatus(){
+  const playersEl = document.getElementById('playersList');
+  const adminsEl = document.getElementById('adminsList');
+  const onlineEl = document.getElementById('online');
+  const pBadge = document.getElementById('playerCountBadge');
+  const aBadge = document.getElementById('adminCountBadge');
+
+  try {
+    const res = await fetch('https://api.mcsrvstat.us/3/5.83.153.60:5076');
+    const data = await res.json();
+    if(!data.online){
+      onlineEl.textContent = '0';
+      pBadge.textContent = 'სერვერი გამორთულია';
+      playersEl.innerHTML = '<li class="player-item" style="color:var(--muted)">სერვერი ამჟამად ოფლაინია</li>';
+      renderAdmins([]);
+      return;
+    }
+    const onlineCount = data.players?.online || 0;
+    const maxCount = data.players?.max || 0;
+    const list = data.players?.list || [];
+    onlineEl.textContent = onlineCount;
+    pBadge.textContent = `${onlineCount} / ${maxCount}`;
+    playersEl.innerHTML = list.length > 0
+      ? list.map(p => `<li class="player-item"><div class="player-info"><span class="dot"></span><span>${p.name}</span></div></li>`).join('')
+      : `<li class="player-item" style="color:var(--muted)">${onlineCount > 0 ? 'მოთამაშეების სია დამალულია' : 'ამჟამად მოთამაშეები არ არიან'}</li>`;
+    renderAdmins(list.map(p => p.name.toLowerCase()));
+  } catch (e) {
+    playersEl.innerHTML = '<li class="player-item" style="color:var(--muted)">სტატუსის წაკითხვა ვერ მოხერხდა</li>';
+    renderAdmins([]);
+  }
+
+  function renderAdmins(onlineNames){
+    const onlineAdmins = serverAdmins.filter(a => onlineNames.includes(a.name.toLowerCase()));
+    aBadge.textContent = `${onlineAdmins.length} ონლაინ`;
+    adminsEl.innerHTML = serverAdmins.map(a => {
+      const isOnline = onlineNames.includes(a.name.toLowerCase());
+      return `<li class="player-item"><div class="player-info"><span class="dot ${isOnline ? '' : 'offline'}"></span><span style="color:${isOnline ? '#fff' : 'var(--muted)'}">${a.name}</span></div><span class="admin-role ${a.role==='Owner'?'owner':''}">${a.role}</span></li>`;
+    }).join('');
+  }
+}
+loadServerStatus();
+</script>
+</body></html>
+</script>
+</body></html>

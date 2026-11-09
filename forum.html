@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#120d0a">
+<title>ფორუმი — LEGACY 1892</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&family=Manrope:wght@400;500;600;700;800&display=swap');
+:root{--bg:#100c0a;--panel:#1b1410;--gold:#d9a441;--gold2:#ffdc87;--muted:#b9a995}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -10%,#52301b 0,#160f0b 42%,#0d0908 100%);color:#f7ead5;font-family:Manrope,Arial,sans-serif;min-height:100vh;display:flex;flex-direction:column}
+a{color:inherit;text-decoration:none}.wrap{width:min(1180px,92%);margin:auto}
+header{position:sticky;top:0;z-index:10;background:#100c0aeF;border-bottom:1px solid #6b4a25;backdrop-filter:blur(12px)}
+.nav{height:76px;display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{font:900 24px Cinzel,serif;color:var(--gold2);letter-spacing:2px}.brand small{display:block;font:700 9px Manrope;letter-spacing:5px;text-align:center;color:#b88a45}
+nav{display:flex;gap:24px;color:#e6d3b6;font-size:13px;font-weight:800;text-transform:uppercase}nav a:hover,nav a.active{color:var(--gold2)}
+.btn{border:1px solid var(--gold);background:linear-gradient(135deg,#9b6421,#e0ad4f);color:#1a1008;padding:12px 18px;border-radius:5px;font-weight:900;cursor:pointer;box-shadow:0 5px 22px #0007}.btn:hover{filter:brightness(1.12);transform:translateY(-1px)}
+main{flex:1;padding:60px 0}
+.section-head{text-align:center;margin-bottom:40px}.eyebrow{color:var(--gold2);letter-spacing:4px;font-size:12px;font-weight:900}.section-head h1{font:800 clamp(30px,4vw,46px) Cinzel;color:var(--gold2);margin:10px 0}.section-head p{color:var(--muted);margin:0}
+.forum-grid{display:grid;grid-template-columns:1.5fr .9fr;gap:20px}
+.panel,.post{background:linear-gradient(145deg,#241910,#140f0c);border:1px solid #684923;border-radius:8px;padding:22px}
+.post{margin-bottom:14px}.post h3{margin:0 0 8px;color:var(--gold2);font:700 18px Cinzel}.post p{margin:0;color:var(--muted);font-size:13px;line-height:1.7}.tag{font-size:10px;color:#f1c875;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;display:block}
+.new-post input,.new-post textarea{width:100%;padding:12px;margin:8px 0;background:#0d0908;border:1px solid #674a2c;color:#fff;border-radius:5px;font-family:inherit}
+footer{border-top:1px solid #684923;padding:30px 0;color:var(--muted);font-size:12px;text-align:center}
+@media(max-width:760px){.nav{height:auto;min-height:70px;flex-wrap:wrap;padding:12px 0}nav{order:3;width:100%;justify-content:center;gap:14px;flex-wrap:wrap;font-size:11px}.forum-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header><div class="wrap nav">
+<a class="brand" href="index.html">LEGACY <small>1892</small></a>
+<nav><a href="index.html">მთავარი</a><a href="shop.html">მაღაზია</a><a href="forum.html" class="active">ფორუმი</a><a href="index.html#rules">წესები</a></nav>
+<a class="btn" href="index.html">უკან დაბრუნება</a>
+</div></header>
+
+<main><div class="wrap">
+<div class="section-head"><div class="eyebrow">COMMUNITY HALL</div><h1>სამეფო ფორუმი</h1><p>სიახლეები, მოთამაშეების იდეები და დახმარება.</p></div>
+
+<div class="forum-grid">
+<div id="postsList">
+<div class="post"><span class="tag">ადმინისტრაცია</span><h3>📢 სერვერის გახსნის განცხადება</h3><p>თვალი ადევნეთ სიახლეებს და მოემზადეთ LEGACY 1892-ის სამყაროში შესასვლელად. IP: 5.83.153.60:5076</p></div>
+<div class="post"><span class="tag">იდეები</span><h3>📝 მოთამაშეების შეთავაზებები</h3><p>გაგვიზიარე იდეები, რომლებიც სერვერს უკეთესს გახდის.</p></div>
+<div class="post"><span class="tag">დახმარება</span><h3>❓ დახმარება და მხარდაჭერა</h3><p>დასვი შეკითხვა აქ ან შემოგვიერთდი Discord-ზე სწრაფი პასუხისთვის.</p></div>
+</div>
+
+<aside class="panel new-post" style="height:fit-content">
+<span class="tag">NEW TOPIC</span>
+<h3 style="font:700 22px Cinzel;color:var(--gold2);margin:0 0 12px">ახალი თემის შექმნა</h3>
+<input id="author" placeholder="შენი სახელი / ნიკი">
+<input id="title" placeholder="თემის სათაური">
+<textarea id="body" rows="4" placeholder="დაწერე ტექსტი..."></textarea>
+<button class="btn" style="width:100%;margin-top:8px" onclick="addPost()">გამოქვეყნება</button>
+</aside>
+</div>
+</div></main>
+
+<footer><div class="wrap">© 2026 LEGACY 1892 • Minecraft Server.</div></footer>
+
+<script>
+function addPost(){
+  const a=document.getElementById('author').value.trim();
+  const t=document.getElementById('title').value.trim();
+  const b=document.getElementById('body').value.trim();
+  if(!a||!t||!b) return alert('გთხოვ შეავსო ყველა ველი!');
+  const div=document.createElement('div');
+  div.className='post';
+  div.innerHTML=`<span class="tag">${a}</span><h3>${t}</h3><p>${b}</p>`;
+  document.getElementById('postsList').prepend(div);
+  document.getElementById('author').value='';
+  document.getElementById('title').value='';
+  document.getElementById('body').value='';
+}
+</script>
+</body></html>
