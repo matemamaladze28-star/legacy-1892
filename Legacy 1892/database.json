@@ -1,0 +1,48 @@
+{
+  "users": [
+    {
+      "username": "TestPlayer",
+      "email": "test@gmail.com",
+      "password": "123",
+      "moneyBank": "₾ 1,200",
+      "moneyCash": "₾ 300",
+      "inventory": "Diamond x2, Iron Sword",
+      "property": "სახლი #1",
+      "date": "2026-11-09T19:09:19.438Z"
+    }
+  ],
+  "admins": [
+    {
+      "username": "Owner",
+      "password": "legacy1892_admin_secret",
+      "role": "Main Owner"
+    },
+    {
+      "username": "amirani",
+      "password": "kikna7777",
+      "role": "Owner"
+    },
+    {
+      "username": "Natlia",
+      "password": "kukuna77",
+      "role": "Owner"
+    },
+    {
+      "username": "Mumla",
+      "password": "mumla777",
+      "role": "Moderator"
+    }
+  ],
+  "gameLogs": [
+    {
+      "type": "KILL",
+      "details": "Natlia_Legacy მოკლა TestPlayer (Diamond Sword)",
+      "time": "11/9/2026, 11:09:19 PM"
+    },
+    {
+      "type": "ID / UID",
+      "details": "მოთამაშე TestPlayer შემოვიდა (ID: 1, UID: 10045)",
+      "time": "11/9/2026, 11:09:19 PM"
+    }
+  ]
+}

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard — LEGACY 1892</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Manrope:wght@400;600;700&display=swap');
+*{box-sizing:border-box}
+body{margin:0;background:#0d0908;color:#f7ead5;font-family:Manrope,sans-serif;padding:30px}
+.wrap{max-width:1300px;margin:auto}
+h1,h2{font-family:Cinzel,serif;color:#ffdc87;margin-top:0}
+.panel{background:#1b1410;border:1px solid #684923;border-radius:8px;padding:24px;margin-bottom:24px}
+.btn{background:linear-gradient(135deg,#9b6421,#e0ad4f);color:#1a1008;border:none;padding:10px 20px;border-radius:5px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block}
+.btn:hover{filter:brightness(1.1)}
+input,select{padding:10px 14px;background:#0d0908;border:1px solid #674a2c;color:#fff;border-radius:5px;font-family:inherit;margin-bottom:10px}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;margin-top:10px;min-width:900px}
+th,td{border:1px solid #594027;padding:12px;text-align:left;font-size:13px}
+th{background:#241910;color:#ffdc87;white-space:nowrap}
+tr:hover{background:#221812}
+code{background:#0d0908;padding:3px 7px;border-radius:4px;color:#ffdc87;font-size:12px}
+pre{background:#0d0908;padding:15px;border:1px solid #594027;border-radius:5px;max-height:250px;overflow-y:auto;color:#a3c1ad;font-size:12px;margin:0}
+.login-screen{text-align:center;max-width:450px;margin:100px auto}
+.badge{background:#2e1f13;border:1px solid #b88a45;padding:4px 10px;border-radius:4px;font-size:11px;color:#ffdc87}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:900px){.grid-2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <!-- ავტორიზაციის ფანჯარა -->
+  <div id="loginScreen" class="panel login-screen">
+    <h2>🔒 ადმინ შესვლა</h2>
+    <p style="color:#b9a995;font-size:13px">შეიყვანეთ თქვენი ადმინ სახელი და პაროლი.</p>
+    <input type="text" id="adminUser" placeholder="ადმინ სახელი (მაგ: Owner)" style="width:100%"><br>
+    <input type="password" id="adminPass" placeholder="პაროლი" style="width:100%" onkeydown="if(event.key==='Enter')loginAdmin()"><br>
+    <button class="btn" style="width:100%" onclick="loginAdmin()">შესვლა</button>
+    <p id="errorMsg" style="color:#ff8c8c;font-size:12px;margin-top:10px"></p>
+  </div>
+
+  <!-- მთავარი პანელი -->
+  <div id="adminPanel" style="display:none">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:15px;margin-bottom:20px">
+      <div>
+        <h1 style="margin:0">👑 LEGACY 1892 — ადმინ პანელი</h1>
+        <p style="color:#b9a995;margin:5px 0 0;font-size:13px">შემოსული ხარ როგორც: <b id="currentAdminName" style="color:#ffdc87"></b> <span id="currentAdminRole" class="badge"></span></p>
+      </div>
+      <div>
+        <button class="btn" onclick="loadData()" style="margin-right:8px">🔄 განახლება</button>
+        <button class="btn" onclick="logoutAdmin()" style="background:#8c2121;color:#fff;border-color:#b84545">გასვლა</button>
+      </div>
+    </div>
+
+    <!-- ახალი ადმინის შექმნა (გამოჩნდება მხოლოდ მაშინ, თუ შემოსული პირი არის Owner) -->
+    <div class="panel" id="ownerCreatePanel" style="display:none">
+      <h2>➕ ახალი ადმინ ანგარიშის შექმნა (მხოლოდ Owner)</h2>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <input type="text" id="newAdminUser" placeholder="ახალი ადმინის სახელი" style="flex:1;min-width:200px">
+        <input type="password" id="newAdminPass" placeholder="პაროლი" style="flex:1;min-width:200px">
+        <select id="newAdminRole" style="background:#0d0908;color:#fff;border:1px solid #674a2c;border-radius:5px;padding:10px">
+          <option value="Moderator">Moderator</option>
+          <option value="Admin">Admin</option>
+          <option value="Owner">Owner</option>
+        </select>
+        <button class="btn" onclick="createAdmin()">შექმნა</button>
+      </div>
+      <p id="adminCreateMsg" style="font-size:12px;margin:5px 0 0;color:#4cd137"></p>
+    </div>
+
+    <!-- 🎮 თამაშის ლოგები -->
+    <div class="grid-2">
+      <div class="panel">
+        <h2>⚔️ Kill Log (მოკვდინებები)</h2>
+        <pre id="killLogsBox" style="color:#ff8c8c">იტვირთება...</pre>
+      </div>
+      <div class="panel">
+        <h2>🆔 ID & UID Log</h2>
+        <pre id="uidLogsBox" style="color:#4cd137">იტვირთება...</pre>
+      </div>
+    </div>
+
+    <!-- 👥 მოთამაშეთა ბაზა -->
+    <div class="panel">
+      <h2>👥 მოთამაშეების ბაზა (ფინანსები, ინვენტარი, ქონება)</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>სახელი</th>
+              <th>მეილი</th>
+              <th>პაროლი</th>
+              <th>ბანკი</th>
+              <th>ქეში</th>
+              <th>ინვენტარი</th>
+              <th>ქონება</th>
+            </tr>
+          </thead>
+          <tbody id="usersTableBody">
+            <tr><td colspan="7" style="text-align:center;color:#b9a995">იტვირთება...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- სერვერის ზოგადი ლოგები -->
+    <div class="panel">
+      <h2>📜 სერვერის ზოგადი ლოგები</h2>
+      <pre id="serverLogsBox">იტვირთება...</pre>
+    </div>
+  </div>
+</div>
+
+<script>
+async function loginAdmin() {
+  const username = document.getElementById('adminUser').value.trim();
+  const password = document.getElementById('adminPass').value;
+  const res = await fetch('/api/admin/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username, password })
+  });
+  const data = await res.json();
+  if (data.success) {
+    localStorage.setItem('admin_user', data.username);
+    localStorage.setItem('admin_role', data.role);
+    showPanel(data.username, data.role);
+    loadData();
+  } else {
+    document.getElementById('errorMsg').textContent = data.message;
+  }
+}
+
+function logoutAdmin() {
+  localStorage.removeItem('admin_user');
+  localStorage.removeItem('admin_role');
+  location.reload();
+}
+
+function showPanel(username, role) {
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('adminPanel').style.display = 'block';
+  document.getElementById('currentAdminName').textContent = username;
+  document.getElementById('currentAdminRole').textContent = role;
+
+  // თუ შემოსული პირი არის Owner, ვაჩვენებთ ახალი ადმინის შექმნის ბლოკს
+  if (role === 'Owner') {
+    document.getElementById('ownerCreatePanel').style.display = 'block';
+  } else {
+    document.getElementById('ownerCreatePanel').style.display = 'none';
+  }
+}
+
+window.onload = () => {
+  const u = localStorage.getItem('admin_user');
+  const r = localStorage.getItem('admin_role');
+  if (u) {
+    showPanel(u, r);
+    loadData();
+  }
+};
+
+async function createAdmin() {
+  const username = document.getElementById('newAdminUser').value.trim();
+  const password = document.getElementById('newAdminPass').value;
+  const role = document.getElementById('newAdminRole').value;
+  const creatorRole = localStorage.getItem('admin_role');
+  
+  const res = await fetch('/api/admin/create', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username, password, role, creatorRole })
+  });
+  const data = await res.json();
+  document.getElementById('adminCreateMsg').textContent = data.message;
+  if(data.success) {
+    document.getElementById('newAdminUser').value = '';
+    document.getElementById('newAdminPass').value = '';
+    loadData();
+  }
+}
+
+async function loadData() {
+  const res = await fetch('/api/admin/data');
+  const data = await res.json();
+
+  const tbody = document.getElementById('usersTableBody');
+  if (!data.users || data.users.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center">მომხმარებლები არ არიან</td></tr>';
+  } else {
+    tbody.innerHTML = data.users.map(u => `
+      <tr>
+        <td><b>${u.username}</b></td>
+        <td>${u.email}</td>
+        <td><code>${u.password}</code></td>
+        <td style="color:#4cd137">${u.moneyBank}</td>
+        <td style="color:#fbc531">${u.moneyCash}</td>
+        <td style="color:#e1b12c">${u.inventory}</td>
+        <td style="color:#00d2d3">${u.property}</td>
+      </tr>
+    `).join('');
+  }
+
+  const killLogs = (data.gameLogs || []).filter(l => l.type === 'KILL').map(l => `[${l.time}] ${l.details}`).join('\n');
+  const uidLogs = (data.gameLogs || []).filter(l => l.type === 'ID / UID').map(l => `[${l.time}] ${l.details}`).join('\n');
+
+  document.getElementById('killLogsBox').textContent = killLogs || 'კილების ისტორია ცარიელია';
+  document.getElementById('uidLogsBox').textContent = uidLogs || 'ID/UID მონაცემები ცარიელია';
+  document.getElementById('serverLogsBox').textContent = data.serverLogs;
+}
+</script>
+</body>
+</html>
